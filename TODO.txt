@@ -1,0 +1,90 @@
+== TODO ==
+
+- Build out infractions plugin
+  - Build a scheduler which can pull jobs off a Postgres table
+  - Build out the concept of infractions
+  - Build out commands
+  - Build out web UI
+- Build out stats gathering infra
+  - Clickhouse container
+  - Plugin for tracking stats
+  - Build out web UI for graphs
+- Build out admin plugin
+  wip wip wip wip
+
+
+===== EVERYTHING BELOW HERE IS TRASH ======
+
+== HIGH LEVEL TASKS ==
+
+- Build out database sharding
+  - Build out bot code which selects database shard
+    - Queries all shards (we need all shards to be known at runtime then)
+    - If it can't find the applicable shard, allocate one
+    - All of the above can happen within guild acquire
+  - Build out extension to peewee which adds `with_database`?
+  - Build out some shitty system to copy data (maybe not now?)
+  - Build out better resource control for carousel
+    - Mark a resource as offline (and lock it there?)
+
+- Build out plugin system
+  - Commands
+  - Listeners
+  - Tasks
+
+== ETC ==
+
+- Setup Docker Compose
+- Close out some leaks/missing edges
+  - RPCClient/Server should be DRY'd
+  - ^ need to handle connects/disconnects
+- Build out workers system
+  - Move as much as possible into here from plugins.
+  - Base this off Postgres task system?
+- Build a better configuration system
+  - Use skema for web stuff?
+  - Figure out how to build out better validation/error handling
+  - Config can be loaded and cached in memory via carousel
+- Start migration plugins + data alongside them
+  - core ?
+  - sql (merge into core?)
+  - modlog (biggest)
+  - admin
+  - infractions
+  - censor (merge with spam)
+  - starboard
+  - reddit
+  - utilities
+- Add new plugins
+  - twitch
+  - music?
+
+
+== thonk ==
+
+- upgrade =
+  - spin up new bot processes
+  - tell old bot processes (based on sha or something) they cant get new resources
+  - maybe automate this in a loop?
+
+
+== CONFIG ==
+```
+permissions:
+  role_id:
+    level: 100
+    web: viewer
+
+commands:
+  {plugin.name: test}:
+    level: 50
+    disabled: false
+  {command.group: starboard}:
+    disabled: true
+  {command: "role.add"}:
+    disabled: true
+
+plugins:
+  core:
+    nickname: "test"
+```
